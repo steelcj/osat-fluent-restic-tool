@@ -1,0 +1,16 @@
+#
+# source
+#   project: osat-fluent-restic-tool
+#   path: scripts/windows/restic.ps1.template
+# generates
+#   path: %LOCALAPPDATA%\Programs\restic.ps1
+#
+# Do not edit generated wrappers; regenerated on --install and --switch.
+# Sources the manager env (the active-version pointer) then the operator env
+# (owned by the operator, never touched by the manager) at runtime, so
+# version switching requires no shell restart and scheduled tasks resolve
+# the same version an interactive shell does.
+$_cfg = "$env:APPDATA\restic-tool"
+if (Test-Path "$_cfg\restic-tool.env.ps1") { . "$_cfg\restic-tool.env.ps1" }
+if (Test-Path "$_cfg\env.ps1") { . "$_cfg\env.ps1" }
+& "$env:RESTIC_TOOL_ROOT\restic.exe" @args

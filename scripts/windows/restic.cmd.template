@@ -1,0 +1,17 @@
+@echo off
+rem
+rem source
+rem   project: osat-fluent-restic-tool
+rem   path: scripts/windows/restic.cmd.template
+rem generates
+rem   path: %LOCALAPPDATA%\Programs\restic.cmd
+rem
+rem Do not edit generated wrappers; regenerated on --install and --switch.
+rem Calls the manager env (the active-version pointer) then the operator env
+rem (owned by the operator, never touched by the manager) at runtime, so
+rem version switching requires no shell restart and scheduled tasks resolve
+rem the same version an interactive shell does.
+set "_cfg=%APPDATA%\restic-tool"
+if exist "%_cfg%\restic-tool.env.cmd" call "%_cfg%\restic-tool.env.cmd"
+if exist "%_cfg%\env.cmd" call "%_cfg%\env.cmd"
+"%RESTIC_TOOL_ROOT%\restic.exe" %*

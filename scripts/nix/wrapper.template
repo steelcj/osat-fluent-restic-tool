@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# source
+#   project: osat-fluent-restic-tool
+#   path: scripts/nix/wrapper.template
+# generates
+#   path: ~/.local/bin/restic
+#
+# Do not edit generated wrappers; regenerated on --install and --switch.
+# Sources the manager env (the active-version pointer) then the operator env
+# (owned by the operator, never touched by the manager) at runtime, so version
+# switching requires no shell restart and non-interactive contexts (cron,
+# systemd user timers) resolve the same version an interactive shell does.
+_cfg="${XDG_CONFIG_HOME:-$HOME/.config}/restic-tool"
+[ -f "$_cfg/restic-tool.env" ] && . "$_cfg/restic-tool.env"
+[ -f "$_cfg/env" ] && . "$_cfg/env"
+export RESTIC_TOOL_ROOT
+exec "$RESTIC_TOOL_ROOT/restic" "$@"
