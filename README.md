@@ -1,6 +1,6 @@
 # osat-fluent-restic-tool
 
-Version: 0.2.1
+Version: 0.2.2
 Status: Draft
 
 A user-space manager for [restic](https://restic.net/), the encrypted, deduplicating backup program, part of the OS Sovereign Autonomous Tools (OSAT) Fluent collection.
