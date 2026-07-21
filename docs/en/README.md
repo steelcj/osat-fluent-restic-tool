@@ -1,6 +1,6 @@
 # osat-fluent-restic-tool
 
-Version: 0.2.2
+Version: 0.3.0
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists v0.2.0
 
@@ -124,6 +124,7 @@ This document, *osat-fluent-restic-tool*, by **Christopher Steel**, with AI assi
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.3.0 | Draft | updated and tested guide and dev docs, testing automated release|
 | 0.2.1 | Draft | Shared wrapper directory (~/.local/bin, %LOCALAPPDATA%\Programs) exempted from owner-only enforcement — the manager owns the wrapper file, never the shared directory; failure reported on first production install against a 775 ~/.local/bin. Share-dir permission verification extended to the activation path |
 | 0.2.0 | Draft | Adopted the proven sat-tool approaches: source/generates/generated provenance headers in all three wrapper syntaxes with by: stamp; refuse-and-remove for artifacts failing their health check; archive admission tightened to checksum-verified and execution-proven binaries only; CRLF-explicit writing for all Windows-rendered files (fixing a v0.1.0 defect that would have produced CRCRLF); sat-style release pipeline adopted as bump-version.py; simulated-Windows harness (validate-windows.py) validating every kernel-independent Windows code path, 25 checks passing |
 | 0.1.0 | Draft | Initial scaffold: fluent manager with install, switch, status, remove lifecycle; archetype 5 acquisition with SHA-256 verification; archive-first resolution; PROVENANCE recording; two-env-file split (manager pointer, operator environment); owner-only permissions set on creation and verified thereafter; validated on Linux x86_64 against restic 0.19.1 and 0.18.1 including offline archive restore |

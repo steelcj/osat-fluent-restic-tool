@@ -1,6 +1,6 @@
 # osat-fluent-restic-tool
 
-Version: 0.2.2
+Version: 0.3.0
 Status: Draft
 
 A user-space manager for [restic](https://restic.net/), the encrypted, deduplicating backup program, part of the OS Sovereign Autonomous Tools (OSAT) Fluent collection.
@@ -27,6 +27,15 @@ A restic repository must be read by a restic version that understands the reposi
 ## Verification
 
 Every download is verified against the `SHA256SUMS` file upstream publishes alongside each release before anything touches the filesystem. Each installed version carries a `PROVENANCE` file recording the asset name, its SHA-256, the source, and the install time. All manager-owned paths are owner-only (`700`/`600`), set on creation and verified on every subsequent run.
+
+## Changelog
+
+| Version | Status | Notes |
+|---------|--------|-------|
+| 0.3.0 | Draft | updated and tested guide and dev docs, testing automated release|
+| 0.2.1 | Draft | Shared wrapper directory (~/.local/bin, %LOCALAPPDATA%\Programs) exempted from owner-only enforcement — the manager o>
+| 0.2.0 | Draft | Adopted the proven sat-tool approaches: source/generates/generated provenance headers in all three wrapper syntaxes w>
+| 0.1.0 | Draft | Initial scaffold: fluent manager with install, switch, status, remove lifecycle; archetype 5 acquisition with SHA-256>
 
 ## License
 
