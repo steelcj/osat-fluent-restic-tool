@@ -1,7 +1,15 @@
-# ROADMAP
+# ROADMAP and known issues
 
 Version: 0.1.0
 Status: Draft
+
+## Potential Issues
+
+Items to open as tracked issues against [osat-fluent-restic-tool](https://github.com/steelcj/osat-fluent-restic-tool) (or feed back into the osat-fluent template):
+
+1. **`--install` success message is misleading.** After running `python3 install-restic.py --install 0.18.1`, the tool prints `restic 0.18.1 installed and active` and tells the user to verify with `restic version`. Running `restic version` immediately after still reports the *previously active* version, not 0.18.1. Installing a version does not activate it — only `--switch` does. Fix: either change the `--install` output to not claim the version is "active," or have `--install` prompt/offer to switch automatically.
+2. **Drive mount point may not match the label.** `e2label` sets the filesystem label, but the desktop automounter doesn't always pick it up for the mount path — some setups keep mounting under the UUID. The guide now has readers confirm the actual path with `lsblk -f` rather than assuming the label. Worth checking whether `install-restic.py` (or a small helper script) could detect and report this automatically.
+3. **Multi-target config schema is new and untested end-to-end.** This version introduces `~/.config/restic-tool/env/<host>/<target>/{env,excludes,retention}` as the convention for running more than one backup target from the same machine. It hasn't yet been run through a full second-target setup (e.g. adding an offsite target) to confirm the pattern holds up in practice.
 
 ## Near term
 
