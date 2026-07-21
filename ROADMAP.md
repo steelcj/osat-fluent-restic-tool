@@ -5,6 +5,15 @@ Status: Draft
 
 ## Near term
 
+- Install latest version to local system not working
+
+      python3 install-restic.py --install 0.3.0
+
+  output example:
+
+      [RESTIC-TOOL] installing restic v0.3.0
+      [RESTIC-TOOL] downloading https://github.com/restic/restic/releases/download/v0.3.0/restic_0.3.0_linux_amd64.bz2
+      [RESTIC-TOOL ERROR] download failed for https://github.com/restic/restic/releases/download/v0.3.0/restic_0.3.0_linux_amd64.bz2: HTTP Error 404: Not Found
 - **Add Change log section** to all README.md documents in this project and example projects
 - **Windows hardware validation.** The simulated-Windows harness (`validate-windows.py`) covers path resolution, CRLF env writing, wrapper rendering with the header convention, active-version round-trip, and idempotency detection. Remaining items require a Windows machine: `restic.exe` execution through both wrappers, NTFS ACL verification (the Windows analogue of the nix `700` check — POSIX modes are advisory; ACLs currently inherit owner-only from the profile), and `%LOCALAPPDATA%\Programs\` PATH guidance. Because restic ships a native Windows binary, this tool — not sat-tool, which is blocked upstream — is where the fluent collection's Windows conventions get proven; findings feed back to sat-tool's `scripts/windows/README.md` decision.
 - **macOS validation.** Both Intel and Apple Silicon are mapped in `ASSET_PLATFORMS` and the asset naming is confirmed against upstream releases, but neither has been exercised on hardware under this manager.

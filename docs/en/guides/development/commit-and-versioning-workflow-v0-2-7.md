@@ -151,8 +151,6 @@ M README.md
   A half-done release is finished, not built upon.
 ```
 
-
-
 Add a changelog entry in `docs/en/README.md`, then commit the release surgically. Never `git add .` here: the release commit carries `VERSION` and the changelog and nothing else, so the tag has an unambiguous target.
 
 ```bash
@@ -192,36 +190,47 @@ Add your four changes
 
 ```bash
 git add VERSION README.md docs/en/README.md docs/en/guides/development/commit-and-versioning-workflow-v0-2-6.md
-git commit -m "release 0.7.0"
+git commit -m "release 0.3.0"
+```
+
+Output example:
+
+```bash
+[main b3685b4] release 0.3.0
+ 5 files changed, 370 insertions(+), 16 deletions(-)
+ create mode 100644 docs/en/guides/development/commit-and-versioning-workflow-v0-2-7.md
 ```
 
 Guard before tagging — the commit must contain the version the tag will claim:
 
 ```bash
-git show HEAD:VERSION          # must print 0.7.0; if not, STOP — do not tag
+git show HEAD:VERSION          # must print 0.3.0; if not, STOP — do not tag
 ```
 
 Tag, guard the tag itself, then push. Tag pushes are one-time acts per version: a pushed tag is permanent. A wrong tag is never moved or reused — fix forward by releasing the next number and leaving the wrong tag stranded.
 
 ```bash
-git tag -a v0.7.0 -m "version 0.7.0"
-git show v0.7.0:VERSION        # must print 0.7.0; if not, delete the local tag and STOP
-git push && git push origin v0.7.0
+git tag -a v0.3.0 -m "version 0.3.0"
+git show v0.3.0:VERSION        # must print 0.3.0; if not, delete the local tag and STOP
+git push && git push origin v0.3.0
 ```
 
-### Install latest version to local system
+### Installing the latest restic version to local system
 
 ```bash
-python3 install-restic.py --install 0.2.2
+python3 install-restic.py --status
 ```
 
 output example:
 
 ```bash
-python3 install-restic.py --install 0.2.2
-[RESTIC-TOOL] installing restic v0.2.2
-[RESTIC-TOOL] downloading https://github.com/restic/restic/releases/download/v0.2.2/restic_0.2.2_linux_amd64.bz2
-[RESTIC-TOOL ERROR] download failed for https://github.com/restic/restic/releases/download/v0.2.2/restic_0.2.2_linux_amd64.bz2: HTTP Error 404: Not Found
+[RESTIC-TOOL] osat-fluent-restic-tool 0.3.0
+  install root:  ~/.local/share/restic-tool
+  archive:       ~/.local/share/restic-tool/archive
+  env file:      ~/.config/restic-tool/restic-tool.env
+  installed:
+    0.19.1  ← active
+  archived:      0.19.1, 0.18.1
 ```
 
 Confirm new version installed
@@ -230,28 +239,48 @@ Confirm new version installed
 restic version
 ```
 
+Output example:
+
+```bash
+restic 0.19.1 compiled with go1.26.4 on linux/amd64
+```
+
 ### Release Verification
 
-#### Provinance
+#### Provenance
+
+To confirm the provenance of the current release
 
 ```bash
 cat ~/.local/share/restic-tool/0.19.1/PROVENANCE
 ```
 
-VERSION
-
-> Creators Note: VERSION not found
-
-The installed artifact should reflect the new released version:
+Output example
 
 ```bash
-cat ~/.local/share/sat-tool/0.7.0/VERSION
+manager: osat-fluent-restic-tool 0.2.0
+asset: restic_0.19.1_linux_amd64.bz2
+sha256: 20d4142678d0d95ec11a4759def1b73fd9190abc9ca19e4b62d067c0b387e639
+source: https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_amd64.bz2
+installed: 2026-07-15T12:45:53Z
 ```
 
-Output example:
+## Archived Verification
+
+Archived (inactive) versions are stored locally
 
 ```bash
-0.7.0
+ls -al ~/.local/share/restic-tool/archive/
+```
+
+output example
+
+```bash
+total 16
+drwx------ 4 initial initial 4096 Jul 15 10:04 .
+drwx------ 4 initial initial 4096 Jul 15 10:18 ..
+drwx------ 2 initial initial 4096 Jul 15 10:04 0.18.1
+drwx------ 2 initial initial 4096 Jul 15 08:45 0.19.1
 ```
 
 Any disagreement between the requested version, the artifact's `VERSION`, and the tool's report means a mislabelled release. Do not use it: remove the artifact, find the break in the release sequence above, and fix forward with the next version number.
@@ -260,6 +289,7 @@ Any disagreement between the requested version, the artifact's `VERSION`, and th
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.2.7 | Draft | Tested and edited. Needs another round B4 multiOS confirmation |
 | 0.2.6 | Draft | Customized for osat-fluent-restic-tool |
 | 0.2.4 | Draft | Minor edits for more detailed understanding of generated SAT files |
 | 0.2.3 | Draft | Minor edits for clarity, added testing release section |
