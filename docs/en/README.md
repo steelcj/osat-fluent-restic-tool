@@ -116,6 +116,8 @@ Nothing in restic's runtime domain — repositories, `~/.config/restic/`, cache,
 
 **Why GPG verification is deferred.** Upstream signs releases, but verifying signatures requires a `gpg` binary and trusted-key management that a stdlib-only, no-prerequisite installer cannot assume. SHA-256 verification against the published SHA256SUMS is performed unconditionally; optional GPG verification when `gpg` is present, with a pinned key fingerprint in this repository, is a ROADMAP item.
 
+**Why self-update uses a checksum-verified release archive, not git.** Bootstrap acquisition and self-update both need to get the manager's own source onto disk without assuming `git` is installed. A git clone or GitPython was considered, since `git` was already a stated requirement, but that only pushed the requirement into every future update cycle instead of removing it, and raised a Windows git-availability question this tool otherwise avoids entirely. Downloading the tagged source archive and verifying it against a project-published `SHA256SUMS`, the same archetype 5 shape already used for the restic binary, needed no new dependency and no new pattern. Full alternatives and rationale: [Decision: Self-Update via GitHub Release Archive](docs/en/guides/development/decision--self-update-via-github-release-archive-v0-1-0.md).
+
 ## License
 
 This document, *osat-fluent-restic-tool*, by **Christopher Steel**, with AI assistance from **Claude (Anthropic)**, is licensed under the [GNU General Public License v3.0 or later](https://www.gnu.org/licenses/gpl-3.0.html).
