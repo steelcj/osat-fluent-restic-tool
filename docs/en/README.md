@@ -1,6 +1,6 @@
 # osat-fluent-restic-tool
 
-Version: 0.3.0
+Version: 0.3.1
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists v0.2.0
 
