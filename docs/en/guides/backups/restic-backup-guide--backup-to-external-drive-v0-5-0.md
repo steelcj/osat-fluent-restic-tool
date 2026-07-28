@@ -11,14 +11,14 @@ identifier: "restic-backup-guide--backup-to-external-drive"
 language: "en-CA"
 rights: "CC BY 4.0"
 relation: "https://github.com/steelcj/osat-fluent-restic-tool"
-version: 0.2.0
+version: 0.5.0
 status: Draft
 style_guide: "plain-language, easy reading"
 ---
 
 # Backing up your computer with restic
 
-Version: 0.2.0
+Version: 0.5.0
 Status: Draft
 
 ## Overview
@@ -155,12 +155,23 @@ Output example:
 
 A "target" is one combination of a repository location and a passphrase — a computer with an SSD backup and an offsite backup, for example, is two targets. Give each one its own settings folder, named by computer and drive, so they never collide:
 
+> **Note:** everything under `~/.config/restic-tool/env/` is operator-owned target config — this is the only place `RESTIC_REPOSITORY`, `RESTIC_PASSWORD_FILE`, and retention settings belong. It's separate from `~/.config/restic-tool/restic-tool.env`, a file `install-restic.py` generates and owns to track which installed `restic` binary is active (`RESTIC_TOOL_ROOT`). The manager never writes into `env/`, and nothing you put in `env/` affects which restic version runs.
+
 ```bash
 mkdir -p ~/.config/restic-tool/env/flow/512GB
 nano ~/.config/restic-tool/env/flow/512GB/env
 ```
 
 With these two lines, using the drive path you confirmed above:
+
+Label Based Example
+
+```bash
+export RESTIC_REPOSITORY="/media/initial/512GB/backups/flow"
+export RESTIC_PASSWORD_FILE="${HOME}/.private/restic-tool/password.txt"
+```
+
+UUID Based example
 
 ```sh
 export RESTIC_REPOSITORY="/media/initial/52b79ff7-a6ae-408b-b601-e6cfcb7b3aa7/backups/flow"
@@ -309,9 +320,35 @@ This is non-critical, you can run `restic prune` to correct this.
 
 ### Reatic prune
 
-```
+#### Prune dry run
+
+```bash
 restic prune --dry-run
 ```
+
+Output example:
+
+```bash
+repository b93a0b7e opened (version 2, compression level auto)
+[0:00] 100.00%  18 / 18 index files loaded
+loading all snapshots...
+finding data that is still in use for 8 snapshots
+[0:03] 100.00%  8 / 8 snapshots
+searching used packs...
+collecting packs for deletion and repacking
+[0:00] 100.00%  8860 / 8860 packs processed
+
+Would have made the following changes:
+
+to repack:         15663 blobs / 26.557 MiB
+this removes:          0 blobs / 0 B
+to delete:             0 blobs / 0 B
+total prune:           0 blobs / 0 B
+remaining:        531659 blobs / 146.668 GiB
+unused size after prune: 0 B (0.00% of remaining size)
+```
+
+#### Running the prune
 
 ```bash
 restic prune
@@ -321,24 +358,30 @@ Output example:
 
 ```bash
 repository b93a0b7e opened (version 2, compression level auto)
-[0:00] 100.00%  13 / 13 index files loaded
+[0:00] 100.00%  18 / 18 index files loaded
 loading all snapshots...
-finding data that is still in use for 3 snapshots
-[0:02] 100.00%  3 / 3 snapshots
+finding data that is still in use for 8 snapshots
+[0:03] 100.00%  8 / 8 snapshots
 searching used packs...
 collecting packs for deletion and repacking
-[0:00] 100.00%  8827 / 8827 packs processed
+[0:00] 100.00%  8860 / 8860 packs processed
 
-to repack:             0 blobs / 0 B
+to repack:         15663 blobs / 26.557 MiB
 this removes:          0 blobs / 0 B
-to delete:             0 blobs / 1.870 GiB
-total prune:           0 blobs / 1.870 GiB
-remaining:        524860 blobs / 146.256 GiB
+to delete:             0 blobs / 0 B
+total prune:           0 blobs / 0 B
+remaining:        531659 blobs / 146.668 GiB
 unused size after prune: 0 B (0.00% of remaining size)
 
-deleting unreferenced packs
-[0:00] 100.00%  117 / 117 files deleted
+repacking packs
+[0:01] 100.00%  13 / 13 packs repacked
+rebuilding index
+[0:00] 100.00%  19 / 19 indexes processed
+[0:00] 100.00%  10 / 10 old indexes deleted
+removing 13 old packs
+[0:00] 100.00%  13 / 13 files deleted
 done
+initial@flow:~/2-areas/developm
 ```
 
 ### restic check after prune
@@ -350,15 +393,15 @@ restic check
 Output example:
 
 ```bash
-using temporary cache in /tmp/restic-check-cache-982999797
+using temporary cache in /tmp/restic-check-cache-4221204645
 create exclusive lock for repository
 repository b93a0b7e opened (version 2, compression level auto)
-created new cache in /tmp/restic-check-cache-982999797
+created new cache in /tmp/restic-check-cache-4221204645
 load indexes
-[0:00] 100.00%  13 / 13 index files loaded
+[0:00] 100.00%  11 / 11 index files loaded
 check all packs
 check snapshots, trees and blobs
-[0:02] 100.00%  3 / 3 snapshots
+[0:02] 100.00%  8 / 8 snapshots
 no errors were found
 ```
 
@@ -411,16 +454,16 @@ Output example:
 
 ```bash
 repository b93a0b7e opened (version 2, compression level auto)
-using parent snapshot 20546195
-[0:00] 100.00%  14 / 14 index files loaded
+using parent snapshot 976e96fc
+[0:00] 100.00%  11 / 11 index files loaded
 error: open /home/initial/.private/restic/password.txt: permission denied
 
-Files:           0 new,     1 changed, 851174 unmodified
-Dirs:            0 new,     5 changed, 126351 unmodified
-Added to the repository: 690.354 KiB (67.050 KiB stored)
+Files:       73121 new, 10881 changed, 833548 unmodified
+Dirs:         6455 new,  1621 changed, 124436 unmodified
+Added to the repository: 46.168 GiB (45.117 GiB stored)
 
-processed 851175 files, 218.590 GiB in 0:22
-snapshot aca6ca4c saved
+processed 917550 files, 272.093 GiB in 3:22
+snapshot d853935b saved
 Warning: at least one source file could not be read
 ```
 
@@ -483,6 +526,7 @@ This document, *Backing up your computer with restic*, by **Christopher Steel**,
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.5.0 | Draft | Added a note under "Configure a backup target" distinguishing operator-owned `env/<host>/<target>/` config from the manager-owned `~/.config/restic-tool/restic-tool.env` (tracks active restic version; never touched by target config). |
 | 0.4.0 | Draft | moved roadmap and installer testing documentation out of document |
 | 0.3.0 | Draft | Added details and support for multiple host backup configurations and settings |
 | 0.1.0 | Draft | First plain-language version of the restic backup guide |
