@@ -1,16 +1,16 @@
 ---
-dcterms:title: "OSAT Fluent Frequently Asked Questions"
+dc:title: "OSAT Fluent Frequently Asked Questions"
 dcterms:version: "0.3.1"
-dcterms:creator: "Christopher Steel"
-dcterms:description: "Frequently asked questions about OS Sovereign Autonomous Tools (OSAT) Fluent."
+dc:creator: "Christopher Steel"
+dc:description: "Frequently asked questions about OS Sovereign Autonomous Tools (OSAT) Fluent."
 dcterms:created: "2026-07-21"
 dcterms:modified: "2026-07-21"
-dcterms:format: "text/markdown"
-dcterms:language: "en"
+dc:format: "text/markdown"
+dc:language: "en"
 sat:language_bcp47: "en"
-dcterms:identifier: "osat-fluent-faq"
+dc:identifier: "osat-fluent-faq"
 dcterms:rightsHolder: "Christopher Steel"
-dcterms:rights: >
+dc:rights: >
   Copyright 2026 Christopher Steel.
   SPDX-License-Identifier: AGPL-3.0-or-later
 sat:uuid: ""

@@ -1,20 +1,20 @@
 ---
-dcterms:title: "Decision: Self-Update via GitHub Release Archive, Not Git or GitPython"
+dc:title: "Decision: Self-Update via GitHub Release Archive, Not Git or GitPython"
 dcterms:version: "0.1.0"
-dcterms:creator: "Christopher Steel"
-dcterms:contributor: "Claude (Anthropic) — drafting assistance"
-dcterms:description: "Records why osat-fluent-restic-tool's manager self-update, and its no-git bootstrap acquisition, use a checksum-verified GitHub release archive rather than a git clone or GitPython."
+dc:creator: "Christopher Steel"
+dc:contributor: "Claude (Anthropic) — drafting assistance"
+dc:description: "Records why osat-fluent-restic-tool's manager self-update, and its no-git bootstrap acquisition, use a checksum-verified GitHub release archive rather than a git clone or GitPython."
 dcterms:created: "2026-07-28"
 dcterms:modified: "2026-07-28"
-dcterms:format: "text/markdown"
-dcterms:language: "en"
+dc:format: "text/markdown"
+dc:language: "en"
 sat:language_bcp47: "en"
-dcterms:identifier: "decision--self-update-via-github-release-archive"
+dc:identifier: "decision--self-update-via-github-release-archive"
 dcterms:rightsHolder: "Christopher Steel"
-dcterms:rights: >
+dc:rights: >
   Copyright 2026 Christopher Steel.
   SPDX-License-Identifier: AGPL-3.0-or-later
-dcterms:relation: "https://github.com/steelcj/osat-fluent-restic-tool"
+dc:relation: "https://github.com/steelcj/osat-fluent-restic-tool"
 sat:uuid: ""
 sat:version_at_creation: "0.4.0"
 sat:migration_status: pre-sat
