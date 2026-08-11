@@ -447,7 +447,7 @@ Warning: at least one source file could not be read
 After the first full backup is created , later backups are much faster as only the changes are backed up
 
 ```bash
-restic backup
+restic backup ~ --exclude-file ~/.config/restic-tool/env/flow/512GB/excludes
 ```
 
 Output example:
