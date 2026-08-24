@@ -1,7 +1,32 @@
 # ROADMAP and known issues
 
-Version: 0.1.0
+Version: 0.1.1
 Status: Draft
+
+## Confirmed issues
+
+### Backup logging non functional
+
+Backup logging and cron script currently have issues. See en/docs/guides/proposed/2026-08-11--proposed-changes.md for details on restic failure codes. When logging is functioning it should generate output similar to the following. notice the failure code.
+
+```bash
+cat ~/restic-backup.log 
+2026-08-11 08:23:54 === Backup run starting ===
+2026-08-11 08:23:54 Running backup...
+using parent snapshot 155aac8e
+error: open /home/initial/.private/restic/password.txt: permission denied
+
+Files:       23046 new, 11090 changed, 1052649 unmodified
+Dirs:         3037 new,  1622 changed, 146903 unmodified
+Added to the repository: 1.715 GiB (1.013 GiB stored)
+
+processed 1086785 files, 276.308 GiB in 0:42
+snapshot 045726ab saved
+Warning: at least one source file could not be read
+2026-08-11 08:24:37 BACKUP FAILED — see restic's output above for details.
+2026-08-11 08:24:37 === Backup run finished ===
+```
+
 
 ## Potential Issues
 

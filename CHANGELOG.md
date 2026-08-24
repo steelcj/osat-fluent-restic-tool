@@ -7,6 +7,8 @@ N` file and the git tags. Dates are ISO 8601.
 
 ## [Unreleased]
 
+* Tested process, added changlog issue regarding Restic failure codes and en/guides/proposed/`
+
 ## [0.4.1] - 2026-08-11
 
 * Added section on automating backups to "Restic backup guide backup to external drive".
