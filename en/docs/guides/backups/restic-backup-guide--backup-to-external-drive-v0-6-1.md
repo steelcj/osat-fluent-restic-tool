@@ -469,7 +469,9 @@ snapshot d853935b saved
 Warning: at least one source file could not be read
 ```
 
-## Prove you can get files back
+## Restore Check
+
+Prove that can recover files back
 
 A backup only counts if you can restore from it. Try it now with one file:
 

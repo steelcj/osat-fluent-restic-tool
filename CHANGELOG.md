@@ -7,6 +7,11 @@ N` file and the git tags. Dates are ISO 8601.
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-08-28
+
+* moved old file version into artifacts directore
+* Created a backup and recover document for os upgrades and clean installs
+
 ## [0.4.2] - 2026-08-24
 
 * Tested process, added changlog issue regarding Restic failure codes and en/guides/proposed/`
