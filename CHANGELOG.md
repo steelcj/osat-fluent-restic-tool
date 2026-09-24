@@ -7,6 +7,10 @@ N` file and the git tags. Dates are ISO 8601.
 
 ## [Unreleased]
 
+## [0.4.4] - 2026-09-24
+
+* updated documentations
+
 ## [0.4.3] - 2026-08-28
 
 * moved old file version into artifacts directore

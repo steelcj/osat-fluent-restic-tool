@@ -1,9 +1,119 @@
 # Backup before OS Upgrade and Restore after OS Upgrade
 
-* Backup with restic
-* Manually backup ~/.private (using sudo)
-* Do restore test for ~/.ssh to ~/.ssh-restore
-* Install clean OS
+* [x] Backup with restic
+* [x] Manually backup ~/.private (using sudo)
+* [ ] Do restore test for ~/.ssh to ~/.ssh-restore
+* [ ] Install clean OS
+
+## Manually backup `~/.private` using sudo
+
+Confirm location
+
+```bash
+sudo ls -ld ~/.private
+```
+
+Output
+
+```bash
+drwx------ 24 initial initial 4096 Sep 23 00:25 /home/initial/.private
+```
+
+Verify external drive
+
+```bash
+findmnt | grep media
+```
+
+Confirmation
+
+```bash
+├─/media/initial/512GB                            /dev/sda               ext4            rw,nosuid,nodev,relatime,errors=remount-ro
+```
+
+Confirm writable
+
+```bash
+sudo touch /media/${USER}/512GB/test
+sudo rm /media/${USER}/512GB/test
+```
+
+Create archive
+
+```bash
+sudo tar \
+  --create \
+  --zstd \
+  --file=/tmp/.private.tar.zst \
+  --acls \
+  --xattrs \
+  --numeric-owner \
+  -C ${HOME} \
+  .private
+```
+
+Confirm contents
+
+```bash
+sudo tar \
+  --list \
+  --zstd \
+  --file=/tmp/.private.tar.zst
+```
+
+Copy to external drive
+
+```bash
+sudo cp \
+  --preserve=all \
+  /tmp/.private.tar.zst \
+  /media/${USER}/512GB/
+```
+
+Confirm
+
+```bash
+sudo ls -lh /media/${USER}/512GB/.private.tar.zst
+```
+
+output: 
+
+```bash
+-rw-r--r-- 1 root root 634K Sep 24 14:12 /media/${USER}/512GB/.private.tar.zst
+```
+
+Generate and compare checksum:
+
+```bash
+sha256sum /tmp/.private.tar.zst
+sudo sha256sum /media/${USER}/512GB/.private.tar.zst
+```
+
+Before removing the external drive, flush pending writes:
+
+    sync
+
+### Restore the directory
+
+```bash
+sudo tar \
+  --extract \
+  --zstd \
+  --file=/media/${USER}/512GB/.private.tar.zst \
+  --acls \
+  --xattrs \
+  --numeric-owner \
+  -C ${HOME}/
+```
+
+Confirm all owners and permissions
+
+```bash
+sudo chown ${USER}:${USER} -R ~/.private
+sudo chmod 700 -R ~/.private
+sudo ls -al .private/signal/
+sudo ls -al .private/restic
+```
 
 ## Before upgrading your OS
 
@@ -15,31 +125,43 @@ Create a timestamp var
 
 ```bash
 export TIMESTAMP="$(date +"%Y-%m-%d--%H:%M:%S")"
-echo $TIMESTAMP
+echo ${TIMESTAMP}
 ```
 
-Test restore to archives /tmp
+Output example:
 
 ```bash
-restic restore latest --target /tmp/$TIMESTAMP/.ssh --include ~/.ssh
+2026-09-24--14:36:12
+```
+
+Create archive restoration point
+
+```bash
+mkdir ${HOME}/archive/${TIMESTAMP}
+```
+
+Test restore of .ssh to archives /tmp
+
+```bash
+restic restore latest --target ${HOME}/archive/${TIMESTAMP}/.ssh --include ~/.ssh
 ```
 
 Confirm
 
 ```bash
-ls -al /tmp/$TIMESTAMP/.ssh/${HOME}/.ssh
+ls -al ${HOME}/archive/${TIMESTAMP}/.ssh
 ```
 
 Open and check a restored file. If it works, your safety net is functioning as it should and is real.
 
 ```bash
-cat /tmp/$TIMESTAMP/.ssh/${HOME}/.ssh/id_ed25519.pub
+ls -al ~/archive/${TIMESTAMP}/.ssh/${HOME}/.ssh
 ```
 
-Cleanup
+### Complete restore to `${HOME}/archive/${TIMESTAMP}`
 
 ```bash
-rm -R /tmp/$TIMESTAMP
+restic restore latest --target "${HOME}/archive/${TIMESTAMP}"
 ```
 
 ## Install or upgrade your OS
@@ -53,11 +175,7 @@ Do your clean OS installation or upgrade your OS
 
 ## Install Restic
 
-
-
 ## Test restic
-
-
 
 ## Do you restore
 
