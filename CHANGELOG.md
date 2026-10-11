@@ -7,6 +7,10 @@ N` file and the git tags. Dates are ISO 8601.
 
 ## [Unreleased]
 
+## [0.4.5] - 2026-10-11
+
+* updated README.md with archive notice
+
 ## [0.4.4] - 2026-09-24
 
 * updated documentations

@@ -1,8 +1,24 @@
 # osat-fluent-restic-tool
 
-Version: 0.3.1
-Status: Draft
-Style Guide: style-guide--technical-documentation-for-technologists v0.2.0
+> **Archived on <YYYY-MM-DD>.** osat-fluent-restic-tool is no longer developed. Its last release is [v0.4.4](https://github.com/steelcj/osat-fluent-restic-tool/releases/tag/v0.4.4).
+>
+> It is succeeded by **[osat-manager-restic](https://github.com/steelcj/osat-manager-restic)**, whose `manage-restic` command installs restic versions side by side in your own account, switches between them, keeps verified downloads for offline restore, and verifies every download against restic's signed `SHA256SUMS` before unpacking it, which this tool did not.
+>
+> **On Windows, keep using this tool for now.** manage-restic is verified on Linux; Windows and macOS are not yet verified.
+>
+> This repository stays readable, and every link and clone keeps working. Its backup guides remain here for reference; manage-restic manages restic itself, not backup policy. This repository remains under GPL-3.0-or-later; osat-manager-restic is MIT for code and CC BY 4.0 for documentation.
+
+## Moving to manage-restic
+
+Your repositories, passwords and restic's own configuration and cache are not touched by either tool. What changes is how restic is installed and launched.
+
+1. **Keep your settings reachable.** This tool's `restic` wrapper read `~/.config/restic-tool/env`, where `RESTIC_REPOSITORY`, `RESTIC_PASSWORD_FILE` and similar settings usually live. manage-restic's launcher reads no environment file. Before switching, make those variables available wherever restic runs: for example, add `. ~/.config/restic-tool/env` to your backup scripts, or export the variables in your shell profile. Keep that file, and any password file under `~/.private/restic-tool/`.
+2. **Note the version you use:** `restic version`.
+3. **Install manage-restic** from a checkout of osat-manager-restic: `PYTHONPATH=lib python3 -m osat_manager_restic --self-install`.
+4. **Move the old wrapper aside**, so manage-restic can write its own: `mv ~/.local/bin/restic ~/.local/bin/restic.restic-tool`. manage-restic refuses to overwrite a launcher it did not write.
+5. **Install the same version:** `manage-restic --install <version>`. It downloads and verifies it again; this tool's archive held bare binaries, which manage-restic cannot import.
+6. **Check:** `restic version`, then a harmless command against your repository, such as `restic snapshots`, from the place your backups run.
+7. **Remove this tool when satisfied:** delete `~/.local/share/restic-tool/`, `~/.local/state/restic-tool/`, `~/.config/restic-tool/restic-tool.env` and `~/.local/bin/restic.restic-tool`. Keep `~/.config/restic-tool/env` and `~/.private/restic-tool/` if your settings or password live there.
 
 A user-space manager for [restic](https://restic.net/), the encrypted, deduplicating backup program by Alexander Neumann and the restic contributors, part of the OS Sovereign Autonomous Tools (OSAT) Fluent collection. restic is a canonical Archetype 5 tool — a single statically linked Go binary distributed via GitHub Releases with published SHA-256 checksums — so acquisition follows the archetype without deviation. The manager combines that acquisition pattern with the fluent lifecycle (install, switch, status, remove) and archive-first resolution, and it supersedes the pre-fluent [restic-tool](https://github.com/steelcj/restic-tool), which used the `~/bin/` layout; see [Migrating from restic-tool](#migrating-from-restic-tool) below.
 
